@@ -68,7 +68,7 @@ export class ClientUsersNamespace {
    * Search users by query.
    * POST /user/client-api/search
    */
-  search(params: AdminUserSearchParams): Promise<LiquidResponse<{ users: User[]; total: number }>> {
+  search(params: AdminUserSearchParams): Promise<LiquidResponse<{ results: User[] }>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/search`,

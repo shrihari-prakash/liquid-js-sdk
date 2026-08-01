@@ -173,7 +173,7 @@ export class UserNamespace {
    * Search for users (delegated auth required).
    * POST /user/search
    */
-  search(params: UserSearchParams): Promise<LiquidResponse<{ users: User[]; total: number }>> {
+  search(params: UserSearchParams): Promise<LiquidResponse<{ results: User[] }>> {
     return this.http.request({
       method: "POST",
       path: "/user/search",
