@@ -76,11 +76,20 @@ export class HttpClient {
           : undefined,
     });
 
-    let data: T;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let rawJson: any;
     try {
-      data = await response.json();
+      rawJson = await response.json();
     } catch {
-      data = undefined as T;
+      rawJson = undefined;
+    }
+
+    // Automatically unwrap Liquid server's { status: "SUCCESS", data: { ... } } response envelope
+    let data: T;
+    if (rawJson && typeof rawJson === "object" && rawJson.status === "SUCCESS" && "data" in rawJson) {
+      data = rawJson.data as T;
+    } else {
+      data = rawJson as T;
     }
 
     return {
