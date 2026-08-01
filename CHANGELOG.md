@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4-beta
+
+- Fixed response unwrapping condition to check for `ok: 1` or `ok: true` as returned by Liquid's `SuccessResponse` class (`{ ok: 1, data: { ... } }`).
+
 ## 0.0.3-beta
 
 - Automatically unwrap Liquid server's `{ status: "SUCCESS", data: { ... } }` response envelope in `HttpClient`, eliminating double `.data.data` access across all SDK methods.

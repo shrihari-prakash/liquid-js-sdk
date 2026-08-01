@@ -84,9 +84,14 @@ export class HttpClient {
       rawJson = undefined;
     }
 
-    // Automatically unwrap Liquid server's { status: "SUCCESS", data: { ... } } response envelope
+    // Automatically unwrap Liquid server's { ok: 1, data: { ... } } response envelope
     let data: T;
-    if (rawJson && typeof rawJson === "object" && rawJson.status === "SUCCESS" && "data" in rawJson) {
+    if (
+      rawJson &&
+      typeof rawJson === "object" &&
+      "data" in rawJson &&
+      (rawJson.ok === 1 || rawJson.ok === true || rawJson.status === "SUCCESS")
+    ) {
       data = rawJson.data as T;
     } else {
       data = rawJson as T;
