@@ -1,0 +1,67 @@
+import type { HttpClient } from "../http.js";
+import type {
+  LiquidResponse,
+  TokenParams,
+  TokenResponse,
+  IntrospectParams,
+  IntrospectResponse,
+  AuthorizeParams,
+} from "../types.js";
+
+export class OAuthNamespace {
+  constructor(private readonly http: HttpClient) {}
+
+  /**
+   * Get an OAuth token (client_credentials, authorization_code, refresh_token, password).
+   * POST /oauth/token
+   */
+  token(params: TokenParams): Promise<LiquidResponse<TokenResponse>> {
+    // OAuth token endpoint uses form-encoded body, not JSON.
+    // We construct URLSearchParams and override the Content-Type manually.
+    const body: Record<string, string> = {
+      grant_type: params.grantType,
+    };
+    if (params.clientId) body["client_id"] = params.clientId;
+    if (params.clientSecret) body["client_secret"] = params.clientSecret;
+    if (params.code) body["code"] = params.code;
+    if (params.redirectUri) body["redirect_uri"] = params.redirectUri;
+    if (params.refreshToken) body["refresh_token"] = params.refreshToken;
+    if (params.username) body["username"] = params.username;
+    if (params.password) body["password"] = params.password;
+    if (params.scope) body["scope"] = params.scope;
+
+    return this.http.request({
+      method: "POST",
+      path: "/oauth/token",
+      body,
+      unauthenticated: true,
+    });
+  }
+
+  /**
+   * Introspect an access token to check validity and retrieve token metadata.
+   * POST /oauth/introspect
+   */
+  introspect(params: IntrospectParams): Promise<LiquidResponse<IntrospectResponse>> {
+    return this.http.request({
+      method: "POST",
+      path: "/oauth/introspect",
+      body: params,
+    });
+  }
+
+  /**
+   * Build the authorization URL to redirect a user to for an OAuth authorization code flow.
+   * Returns the full URL string — navigate the browser to it.
+   * GET /oauth/authorize (redirect URL builder)
+   */
+  buildAuthorizeUrl(baseUrl: string, params: AuthorizeParams): string {
+    const url = new URL("/oauth/authorize", baseUrl);
+    url.searchParams.set("response_type", params.responseType);
+    url.searchParams.set("client_id", params.clientId);
+    url.searchParams.set("redirect_uri", params.redirectUri);
+    if (params.scope) url.searchParams.set("scope", params.scope);
+    if (params.state) url.searchParams.set("state", params.state);
+    return url.toString();
+  }
+}
