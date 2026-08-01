@@ -12,6 +12,8 @@ export interface RequestOptions {
   query?: Record<string, any> | object;
   /** Send request without an Authorization header */
   unauthenticated?: boolean;
+  /** Custom Content-Type header */
+  contentType?: string;
 }
 
 export interface HttpClientOptions {
@@ -42,14 +44,17 @@ export class HttpClient {
   constructor(private readonly options: HttpClientOptions) {}
 
   async request<T = unknown>(opts: RequestOptions): Promise<LiquidResponse<T>> {
-    const { method = "GET", path, body, query, unauthenticated = false } = opts;
+    const { method = "GET", path, body, query, unauthenticated = false, contentType } = opts;
 
     const headers: Record<string, string> = {
       Accept: "application/json",
     };
 
-    // FormData bodies should not have Content-Type set manually (browser sets it with boundary)
-    if (!(body instanceof FormData)) {
+    if (contentType) {
+      headers["Content-Type"] = contentType;
+    } else if (body instanceof URLSearchParams) {
+      headers["Content-Type"] = "application/x-www-form-urlencoded";
+    } else if (!(body instanceof FormData)) {
       headers["Content-Type"] = "application/json";
     }
 
@@ -64,7 +69,7 @@ export class HttpClient {
       method,
       headers,
       body:
-        body instanceof FormData
+        body instanceof FormData || body instanceof URLSearchParams || typeof body === "string"
           ? body
           : body !== undefined
           ? JSON.stringify(body)

@@ -14,26 +14,24 @@ export class OAuthNamespace {
   /**
    * Get an OAuth token (client_credentials, authorization_code, refresh_token, password).
    * POST /oauth/token
+   * Note: The server requires `application/x-www-form-urlencoded`.
    */
   token(params: TokenParams): Promise<LiquidResponse<TokenResponse>> {
-    // OAuth token endpoint uses form-encoded body, not JSON.
-    // We construct URLSearchParams and override the Content-Type manually.
-    const body: Record<string, string> = {
-      grant_type: params.grantType,
-    };
-    if (params.clientId) body["client_id"] = params.clientId;
-    if (params.clientSecret) body["client_secret"] = params.clientSecret;
-    if (params.code) body["code"] = params.code;
-    if (params.redirectUri) body["redirect_uri"] = params.redirectUri;
-    if (params.refreshToken) body["refresh_token"] = params.refreshToken;
-    if (params.username) body["username"] = params.username;
-    if (params.password) body["password"] = params.password;
-    if (params.scope) body["scope"] = params.scope;
+    const searchParams = new URLSearchParams();
+    searchParams.set("grant_type", params.grantType);
+    if (params.clientId) searchParams.set("client_id", params.clientId);
+    if (params.clientSecret) searchParams.set("client_secret", params.clientSecret);
+    if (params.code) searchParams.set("code", params.code);
+    if (params.redirectUri) searchParams.set("redirect_uri", params.redirectUri);
+    if (params.refreshToken) searchParams.set("refresh_token", params.refreshToken);
+    if (params.username) searchParams.set("username", params.username);
+    if (params.password) searchParams.set("password", params.password);
+    if (params.scope) searchParams.set("scope", params.scope);
 
     return this.http.request({
       method: "POST",
       path: "/oauth/token",
-      body,
+      body: searchParams,
       unauthenticated: true,
     });
   }
