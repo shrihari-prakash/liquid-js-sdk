@@ -212,7 +212,7 @@ export class UserNamespace {
    * PATCH /user/profile-picture
    * Pass a FormData containing the image file field.
    */
-  updateProfilePicture(formData: FormData): Promise<LiquidResponse<void>> {
+  updateProfilePicture(formData: FormData): Promise<LiquidResponse<{ signedUrl: string }>> {
     return this.http.request({
       method: "PATCH",
       path: "/user/profile-picture",

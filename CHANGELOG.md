@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.8-beta
+
+- Updated `updateProfilePicture` return type signature to `Promise<LiquidResponse<{ signedUrl: string }>>`.
+
+## 0.0.7-beta
+
+- Version bump for Nitrogen integration.
+
 ## 0.0.5-beta
 
 - Eliminated `unknown` response types across all namespaces (`user`, `admin`, `client`).

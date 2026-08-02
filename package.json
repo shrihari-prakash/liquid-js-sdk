@@ -1,6 +1,6 @@
 {
   "name": "liquid-js-sdk",
-  "version": "0.0.7-beta",
+  "version": "0.0.8-beta",
   "description": "A universal (browser + Node.js) SDK for all Liquid authentication platform APIs.",
   "keywords": [
     "liquid",
