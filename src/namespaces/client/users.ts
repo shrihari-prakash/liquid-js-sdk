@@ -10,6 +10,8 @@ import type {
   SetAccessParams,
   SetCreditsParams,
   SetSubscriptionParams,
+  CancelSubscriptionParams,
+  FollowRecord,
   RetrieveUserInfoParams,
   SetCustomDataParams,
   GenerateInviteCodesParams,
@@ -172,11 +174,11 @@ export class ClientUsersNamespace {
    * Cancel a user's subscription.
    * POST /user/client-api/subscription-cancel
    */
-  cancelSubscription(params: { target: string }): Promise<LiquidResponse<unknown>> {
+  cancelSubscription(params: CancelSubscriptionParams): Promise<LiquidResponse<unknown>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/subscription-cancel`,
-      body: params,
+      body: { cancelled: true, ...params },
     });
   }
 
@@ -196,7 +198,7 @@ export class ClientUsersNamespace {
    * Query: ?target=<userId>&limit=…&offset=…
    * GET /user/client-api/user-followers
    */
-  getUserFollowers(params: ClientFollowersParams): Promise<LiquidResponse<{ records: unknown[] }>> {
+  getUserFollowers(params: ClientFollowersParams): Promise<LiquidResponse<{ records: FollowRecord[] }>> {
     return this.http.request({ path: `${this.base}/user-followers`, query: params });
   }
 
@@ -205,7 +207,7 @@ export class ClientUsersNamespace {
    * Query: ?target=<userId>&limit=…&offset=…
    * GET /user/client-api/user-following
    */
-  getUserFollowing(params: ClientFollowersParams): Promise<LiquidResponse<{ records: unknown[] }>> {
+  getUserFollowing(params: ClientFollowersParams): Promise<LiquidResponse<{ records: FollowRecord[] }>> {
     return this.http.request({ path: `${this.base}/user-following`, query: params });
   }
 

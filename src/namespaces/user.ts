@@ -20,6 +20,7 @@ import type {
   Setup2FAParams,
   Do2FAParams,
   GetFollowersParams,
+  FollowRecord,
   LoginHistoryEntry,
   InviteCode,
   PaginationParams,
@@ -277,7 +278,7 @@ export class UserNamespace {
    * Get followers of the authenticated user (or a specific user).
    * GET /user/followers  |  GET /user/:userId/followers
    */
-  getFollowers(params?: GetFollowersParams): Promise<LiquidResponse<unknown>> {
+  getFollowers(params?: GetFollowersParams): Promise<LiquidResponse<{ records: FollowRecord[] }>> {
     const { userId, ...rest } = params ?? {};
     const path = userId ? `/user/${userId}/followers` : "/user/followers";
     return this.http.request({ path, query: rest });
@@ -287,7 +288,7 @@ export class UserNamespace {
    * Get users the authenticated user (or a specific user) is following.
    * GET /user/following  |  GET /user/:userId/following
    */
-  getFollowing(params?: GetFollowersParams): Promise<LiquidResponse<unknown>> {
+  getFollowing(params?: GetFollowersParams): Promise<LiquidResponse<{ records: FollowRecord[] }>> {
     const { userId, ...rest } = params ?? {};
     const path = userId ? `/user/${userId}/following` : "/user/following";
     return this.http.request({ path, query: rest });
@@ -297,7 +298,7 @@ export class UserNamespace {
    * Get pending incoming follow requests for the authenticated user.
    * GET /user/follow-requests
    */
-  getFollowRequests(params?: PaginationParams): Promise<LiquidResponse<unknown>> {
+  getFollowRequests(params?: PaginationParams): Promise<LiquidResponse<{ records: FollowRecord[] }>> {
     return this.http.request({ path: "/user/follow-requests", query: params });
   }
 

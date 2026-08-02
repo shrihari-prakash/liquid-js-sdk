@@ -317,9 +317,29 @@ export interface SetSubscriptionParams {
   subscriptionIdentifier?: string | number;
 }
 
+export interface FollowRecord {
+  _id: string;
+  targetId?: string;
+  sourceId?: string;
+  approved: boolean;
+  createdAt: string;
+  source?: User;
+  target?: User;
+  [key: string]: unknown;
+}
+
 export interface VerifyUserParams {
   /** Target user's _id */
   target: string;
+  /** true = mark verified, false = mark unverified */
+  state: boolean;
+}
+
+export interface CancelSubscriptionParams {
+  /** Target user's _id */
+  target: string;
+  /** true = cancel, false = un-cancel. Defaults to true if omitted. */
+  cancelled?: boolean;
 }
 
 export interface RetrieveUserInfoParams {

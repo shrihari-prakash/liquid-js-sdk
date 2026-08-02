@@ -10,6 +10,7 @@ import type {
   SetAccessParams,
   SetCreditsParams,
   SetSubscriptionParams,
+  CancelSubscriptionParams,
   VerifyUserParams,
   RetrieveUserInfoParams,
   SetCustomDataParams,
@@ -183,11 +184,11 @@ export class AdminUsersNamespace {
    * Cancel a user's subscription (convenience wrapper for setSubscription with state: false).
    * POST /user/admin-api/subscription-cancel
    */
-  cancelSubscription(params: { target: string }): Promise<LiquidResponse<unknown>> {
+  cancelSubscription(params: CancelSubscriptionParams): Promise<LiquidResponse<unknown>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/subscription-cancel`,
-      body: params,
+      body: { cancelled: true, ...params },
     });
   }
 
