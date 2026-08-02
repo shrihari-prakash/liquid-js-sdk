@@ -19,7 +19,7 @@ const liquid = createLiquidClient({
 });
 
 // Get the logged-in user's profile
-const { data } = await liquid.user.getMe();
+const { data } = await liquid.delegated.getMe();
 console.log(data.user);
 ```
 
@@ -27,7 +27,7 @@ console.log(data.user);
 
 | Namespace                | Auth Context       | Example Usage                                                 |
 | ------------------------ | ------------------ | ------------------------------------------------------------- |
-| `liquid.user.*`          | Delegated User     | `liquid.user.getMe()`                                         |
+| `liquid.delegated.*`     | Delegated User     | `liquid.delegated.getMe()`                                    |
 | `liquid.admin.users.*`   | Admin Delegated    | `liquid.admin.users.ban({ target: 'user_123', state: true })` |
 | `liquid.admin.oauth.*`   | Admin Delegated    | `liquid.admin.oauth.createClient(...)`                        |
 | `liquid.admin.roles.*`   | Admin Delegated    | `liquid.admin.roles.create({ id: 'editor', ... })`            |

@@ -20,10 +20,10 @@ export class LiquidClient {
    * Use these when calling on behalf of an authenticated end-user.
    *
    * @example
-   * await liquid.user.getMe();
-   * await liquid.user.follow({ targetUserId: 'user_123' });
+   * await liquid.delegated.getMe();
+   * await liquid.delegated.follow({ target: 'user_123' });
    */
-  readonly user: UserNamespace;
+  readonly delegated: UserNamespace;
 
   /**
    * Machine-to-machine (client credentials) endpoints.
@@ -95,7 +95,7 @@ export class LiquidClient {
 
     const http = new HttpClient({ baseUrl: normalizedBaseUrl, getAccessToken });
 
-    this.user = new UserNamespace(http);
+    this.delegated = new UserNamespace(http);
     this.client = new ClientNamespace(http);
     this.admin = new AdminNamespace(http);
     this.oauth = new OAuthNamespace(http);
