@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.10-beta
+
+- Removed `liquid.delegated` in favor of `liquid.users` (with `liquid.user` available as alias).
+
 ## 0.0.9-beta
 
 - Audited all liquid handlers and corrected return type signatures:
