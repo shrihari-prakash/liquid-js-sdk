@@ -8,6 +8,7 @@ export type {
   Role,
   InviteCode,
   LoginHistoryEntry,
+  FollowRecord,
   CountryEntry,
   HealthResponse,
   SystemSettings,

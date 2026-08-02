@@ -62,7 +62,7 @@ export class UserNamespace {
    * Log out the current session.
    * GET /user/logout
    */
-  logout(): Promise<LiquidResponse<unknown>> {
+  logout(): Promise<LiquidResponse<void>> {
     return this.http.request({ path: "/user/logout" });
   }
 
@@ -70,7 +70,7 @@ export class UserNamespace {
    * Log out ALL sessions for the current user.
    * GET /user/logout-all
    */
-  logoutAll(): Promise<LiquidResponse<unknown>> {
+  logoutAll(): Promise<LiquidResponse<void>> {
     return this.http.request({ path: "/user/logout-all" });
   }
 
@@ -89,7 +89,7 @@ export class UserNamespace {
    * Query: ?target=<userId>&code=<verificationCode>
    * GET /user/verify-email
    */
-  verifyEmail(params: VerifyEmailParams): Promise<LiquidResponse<unknown>> {
+  verifyEmail(params: VerifyEmailParams): Promise<LiquidResponse<{ message?: string }>> {
     return this.http.request({
       path: "/user/verify-email",
       query: params,
@@ -102,7 +102,7 @@ export class UserNamespace {
    * Query: ?target=<userId>
    * GET /user/resend-verification
    */
-  resendVerification(params: ResendVerificationParams): Promise<LiquidResponse<unknown>> {
+  resendVerification(params: ResendVerificationParams): Promise<LiquidResponse<{ message?: string }>> {
     return this.http.request({
       path: "/user/resend-verification",
       query: params,
@@ -131,7 +131,7 @@ export class UserNamespace {
    * Body: { target: "<userId>", code: "<emailed code>", password: "<new password>" }
    * POST /user/reset-password
    */
-  resetPassword(params: ResetPasswordParams): Promise<LiquidResponse<unknown>> {
+  resetPassword(params: ResetPasswordParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: "/user/reset-password",
@@ -186,7 +186,8 @@ export class UserNamespace {
    * Get the full list of available OAuth scopes (no auth required).
    * GET /user/scopes
    */
-  getScopes(): Promise<LiquidResponse<{ scopes: Record<string, unknown> }>> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getScopes(): Promise<LiquidResponse<{ scopes: Record<string, any> }>> {
     return this.http.request({ path: "/user/scopes", unauthenticated: true });
   }
 
@@ -211,7 +212,7 @@ export class UserNamespace {
    * PATCH /user/profile-picture
    * Pass a FormData containing the image file field.
    */
-  updateProfilePicture(formData: FormData): Promise<LiquidResponse<unknown>> {
+  updateProfilePicture(formData: FormData): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "PATCH",
       path: "/user/profile-picture",
@@ -223,7 +224,7 @@ export class UserNamespace {
    * Delete the authenticated user's profile picture.
    * DELETE /user/profile-picture
    */
-  deleteProfilePicture(): Promise<LiquidResponse<unknown>> {
+  deleteProfilePicture(): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "DELETE",
       path: "/user/profile-picture",
@@ -315,7 +316,7 @@ export class UserNamespace {
    * Body: { request: "<followDocument._id>" }
    * PATCH /user/follow-request
    */
-  acceptFollowRequest(params: FollowRequestPatchParams): Promise<LiquidResponse<unknown>> {
+  acceptFollowRequest(params: FollowRequestPatchParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "PATCH",
       path: "/user/follow-request",
@@ -328,7 +329,7 @@ export class UserNamespace {
    * Body: { entry: "<followDocument._id>" }
    * DELETE /user/follow-entry
    */
-  deleteFollowEntry(params: DeleteFollowEntryParams): Promise<LiquidResponse<unknown>> {
+  deleteFollowEntry(params: DeleteFollowEntryParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "DELETE",
       path: "/user/follow-entry",
@@ -371,7 +372,7 @@ export class UserNamespace {
    * Body: { state: true | false }
    * POST /user/2fa
    */
-  setup2FA(params: Setup2FAParams): Promise<LiquidResponse<unknown>> {
+  setup2FA(params: Setup2FAParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: "/user/2fa",

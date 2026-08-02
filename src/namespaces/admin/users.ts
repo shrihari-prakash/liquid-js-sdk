@@ -10,7 +10,6 @@ import type {
   SetAccessParams,
   SetCreditsParams,
   SetSubscriptionParams,
-  CancelSubscriptionParams,
   VerifyUserParams,
   RetrieveUserInfoParams,
   SetCustomDataParams,
@@ -92,7 +91,7 @@ export class AdminUsersNamespace {
    * Get the list of editable user profile fields per configuration.
    * GET /user/admin-api/editable-fields
    */
-  getEditableFields(): Promise<LiquidResponse<{ fields: string[] }>> {
+  getEditableFields(): Promise<LiquidResponse<{ editableFields: string[] }>> {
     return this.http.request({ path: `${this.base}/editable-fields` });
   }
 
@@ -103,7 +102,7 @@ export class AdminUsersNamespace {
    * Body: { target: "<userId>", state: true | false, reason?: "…" }
    * POST /user/admin-api/ban
    */
-  ban(params: BanParams): Promise<LiquidResponse<unknown>> {
+  ban(params: BanParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/ban`,
@@ -116,7 +115,7 @@ export class AdminUsersNamespace {
    * Body: { target: "<userId>", state: true | false, reason?: "…" }
    * POST /user/admin-api/restrict
    */
-  restrict(params: RestrictParams): Promise<LiquidResponse<unknown>> {
+  restrict(params: RestrictParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/restrict`,
@@ -129,7 +128,7 @@ export class AdminUsersNamespace {
    * Body: { target: "<userId>" }
    * POST /user/admin-api/verify
    */
-  verify(params: VerifyUserParams): Promise<LiquidResponse<unknown>> {
+  verify(params: VerifyUserParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/verify`,
@@ -142,7 +141,7 @@ export class AdminUsersNamespace {
    * Body: { targets: ["…"], targetType: "user"|"client"|"role", scope: ["…"], operation: "add"|"del"|"set" }
    * POST /user/admin-api/access
    */
-  setAccess(params: SetAccessParams): Promise<LiquidResponse<unknown>> {
+  setAccess(params: SetAccessParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/access`,
@@ -157,7 +156,7 @@ export class AdminUsersNamespace {
    * Body: { target: "<userId>", type: "increment"|"decrement"|"set", value: <number> }
    * POST /user/admin-api/credits
    */
-  setCredits(params: SetCreditsParams): Promise<LiquidResponse<unknown>> {
+  setCredits(params: SetCreditsParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/credits`,
@@ -169,10 +168,10 @@ export class AdminUsersNamespace {
 
   /**
    * Activate or cancel a user's subscription.
-   * Body: { target: "<userId>", state: true|false, expiry?: "ISO8601", tier?: "…", subscriptionIdentifier?: … }
+   * Body: { target: "<userId>", state: true|false, expiry?: "ISO8601", tier?: "…" }
    * POST /user/admin-api/subscription
    */
-  setSubscription(params: SetSubscriptionParams): Promise<LiquidResponse<unknown>> {
+  setSubscription(params: SetSubscriptionParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/subscription`,
@@ -181,14 +180,14 @@ export class AdminUsersNamespace {
   }
 
   /**
-   * Cancel a user's subscription (convenience wrapper for setSubscription with state: false).
+   * Cancel a user's subscription.
    * POST /user/admin-api/subscription-cancel
    */
-  cancelSubscription(params: CancelSubscriptionParams): Promise<LiquidResponse<unknown>> {
+  cancelSubscription(params: { target: string }): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/subscription-cancel`,
-      body: { cancelled: true, ...params },
+      body: params,
     });
   }
 
@@ -196,7 +195,7 @@ export class AdminUsersNamespace {
    * Get the list of available subscription tiers from server config.
    * GET /user/admin-api/subscription-tiers
    */
-  getSubscriptionTiers(): Promise<LiquidResponse<{ tiers: unknown[] }>> {
+  getSubscriptionTiers(): Promise<LiquidResponse<{ subscriptionTiers: string[] }>> {
     return this.http.request({ path: `${this.base}/subscription-tiers` });
   }
 
@@ -207,7 +206,7 @@ export class AdminUsersNamespace {
    * Body: { target: "<userId>", customData: { … } }
    * PUT /user/admin-api/custom-data
    */
-  setCustomData(params: SetCustomDataParams): Promise<LiquidResponse<unknown>> {
+  setCustomData(params: SetCustomDataParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "PUT",
       path: `${this.base}/custom-data`,
@@ -248,7 +247,7 @@ export class AdminUsersNamespace {
    * Body: { target: "<userId>", count?: <number> }
    * POST /user/admin-api/invite-codes
    */
-  generateInviteCodes(params: GenerateInviteCodesParams): Promise<LiquidResponse<unknown>> {
+  generateInviteCodes(params: GenerateInviteCodesParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/invite-codes`,

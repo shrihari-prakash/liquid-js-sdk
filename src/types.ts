@@ -18,10 +18,11 @@ export interface LiquidClientOptions {
 // Generic API response wrapper
 // ─────────────────────────────────────────────────────────────────────────────
 
-export interface LiquidResponse<T = unknown> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface LiquidResponse<T = any> {
   /** HTTP status code */
   status: number;
-  /** Parsed JSON body */
+  /** Parsed JSON body (with Liquid server envelope automatically unwrapped) */
   data: T;
   /** True when the HTTP status is in the 2xx range */
   ok: boolean;
@@ -72,10 +73,12 @@ export interface User {
   isBanned?: boolean;
   isRestricted?: boolean;
   isVerified?: boolean;
-  customData?: Record<string, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customData?: Record<string, any>;
   createdAt?: string;
   updatedAt?: string;
-  [key: string]: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface CreateUserParams {
@@ -88,7 +91,8 @@ export interface CreateUserParams {
   phone?: string;
   /** Required when the server is configured for invite-only registration */
   inviteCode?: string;
-  [key: string]: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface UpdateMeParams {
@@ -110,7 +114,8 @@ export interface UpdateMeParams {
   pronouns?: string;
   organization?: string;
   country?: string;
-  [key: string]: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface LoginParams {
@@ -257,13 +262,15 @@ export interface AdminCreateUserParams {
   lastName?: string;
   role?: string;
   scope?: string[];
-  [key: string]: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface AdminUpdateUserParams {
   /** Target user's MongoDB _id */
   target: string;
-  [key: string]: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface AdminUserSearchParams extends PaginationParams {
@@ -321,18 +328,19 @@ export interface FollowRecord {
   _id: string;
   targetId?: string;
   sourceId?: string;
-  approved: boolean;
-  createdAt: string;
+  approved?: boolean;
+  createdAt?: string;
   source?: User;
   target?: User;
-  [key: string]: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface VerifyUserParams {
   /** Target user's _id */
   target: string;
   /** true = mark verified, false = mark unverified */
-  state: boolean;
+  state?: boolean;
 }
 
 export interface CancelSubscriptionParams {
@@ -352,7 +360,8 @@ export interface RetrieveUserInfoParams {
 export interface SetCustomDataParams {
   /** Target user's _id */
   target: string;
-  customData: Record<string, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customData: Record<string, any>;
 }
 
 export interface GenerateInviteCodesParams {
@@ -482,7 +491,8 @@ export interface IntrospectResponse {
     scope: string;
     user?: User;
     client?: Partial<OAuthClient>;
-    [key: string]: unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
   } | null;
 }
 
@@ -536,12 +546,14 @@ export interface DeleteRoleParams {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface SystemSettings {
-  [key: string]: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface SystemStats {
   requestCount?: number;
-  [key: string]: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface SystemVersion {

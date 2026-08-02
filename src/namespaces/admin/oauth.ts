@@ -41,7 +41,7 @@ export class AdminOAuthNamespace {
    * Body: { target: "<clientMongoDBId>", id: "<clientIdString>", ...fields }
    * PATCH /client/admin-api/update
    */
-  updateClient(params: UpdateClientParams): Promise<LiquidResponse<unknown>> {
+  updateClient(params: UpdateClientParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "PATCH",
       path: `${this.base}/update`,
@@ -54,7 +54,7 @@ export class AdminOAuthNamespace {
    * Body: { target: "<clientMongoDBId>" }
    * DELETE /client/admin-api/delete
    */
-  deleteClient(params: DeleteClientParams): Promise<LiquidResponse<unknown>> {
+  deleteClient(params: DeleteClientParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "DELETE",
       path: `${this.base}/delete`,

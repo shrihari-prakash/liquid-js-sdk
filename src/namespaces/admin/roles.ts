@@ -45,7 +45,7 @@ export class AdminRolesNamespace {
    * Body: { target: "<roleIdString>" }
    * DELETE /roles/admin-api/delete
    */
-  delete(params: DeleteRoleParams): Promise<LiquidResponse<unknown>> {
+  delete(params: DeleteRoleParams): Promise<LiquidResponse<void>> {
     return this.http.request({
       method: "DELETE",
       path: `${this.base}/delete`,
