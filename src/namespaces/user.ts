@@ -78,7 +78,7 @@ export class UserNamespace {
    * Check whether the current session is active.
    * GET /user/session-state
    */
-  getSessionState(): Promise<LiquidResponse<{ isLoggedIn: boolean; user?: User }>> {
+  getSessionState(): Promise<LiquidResponse<{ isLoggedIn?: boolean; userInfo: User }>> {
     return this.http.request({ path: "/user/session-state", unauthenticated: true });
   }
 
@@ -146,7 +146,7 @@ export class UserNamespace {
    * Get the authenticated user's profile.
    * GET /user/me
    */
-  getMe(): Promise<LiquidResponse<{ user: User }>> {
+  getMe(): Promise<LiquidResponse<{ user: User; editableFields?: string[] }>> {
     return this.http.request({ path: "/user/me" });
   }
 

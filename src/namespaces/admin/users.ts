@@ -41,7 +41,7 @@ export class AdminUsersNamespace {
    * Create a user as an admin (bypasses invite restrictions).
    * POST /user/admin-api/create
    */
-  create(params: AdminCreateUserParams): Promise<LiquidResponse<{ user: User }>> {
+  create(params: AdminCreateUserParams): Promise<LiquidResponse<{ insertedCount: number; user?: User }>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/create`,

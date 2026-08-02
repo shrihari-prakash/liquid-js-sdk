@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.9-beta
+
+- Audited all liquid handlers and corrected return type signatures:
+  - `getMe()` returns `{ user: User; editableFields?: string[] }`.
+  - `getSessionState()` returns `{ isLoggedIn?: boolean; userInfo: User }`.
+  - `admin.users.create()` & `client.users.create()` return `{ insertedCount: number; user?: User }`.
+
 ## 0.0.8-beta
 
 - Updated `updateProfilePicture` return type signature to `Promise<LiquidResponse<{ signedUrl: string }>>`.

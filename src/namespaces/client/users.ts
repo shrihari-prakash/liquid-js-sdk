@@ -44,7 +44,7 @@ export class ClientUsersNamespace {
    * Create a user via client credentials.
    * POST /user/client-api/create
    */
-  create(params: AdminCreateUserParams): Promise<LiquidResponse<{ user: User }>> {
+  create(params: AdminCreateUserParams): Promise<LiquidResponse<{ insertedCount: number; user?: User }>> {
     return this.http.request({
       method: "POST",
       path: `${this.base}/create`,
