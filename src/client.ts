@@ -16,14 +16,21 @@ import { ClientNamespace } from "./namespaces/client/index.js";
  */
 export class LiquidClient {
   /**
-   * Delegated (user-scoped) endpoints.
+   * User endpoints (delegated auth).
    * Use these when calling on behalf of an authenticated end-user.
    *
    * @example
-   * await liquid.delegated.getMe();
-   * await liquid.delegated.follow({ target: 'user_123' });
+   * await liquid.users.getMe();
+   * await liquid.users.follow({ target: 'user_123' });
    */
-  readonly delegated: UserNamespace;
+  readonly users: UserNamespace;
+
+  /**
+   * Alias for `users`.
+   */
+  get user(): UserNamespace {
+    return this.users;
+  }
 
   /**
    * Machine-to-machine (client credentials) endpoints.
@@ -31,7 +38,7 @@ export class LiquidClient {
    *
    * @example
    * await liquid.client.users.list();
-   * await liquid.client.users.ban({ userId: 'user_123', reason: 'spam' });
+   * await liquid.client.users.ban({ target: 'user_123', state: true });
    */
   readonly client: ClientNamespace;
 
@@ -40,7 +47,7 @@ export class LiquidClient {
    * Use these for privileged operations such as creating OAuth apps or managing roles.
    *
    * @example
-   * await liquid.admin.users.verify({ userId: 'user_123' });
+   * await liquid.admin.users.verify({ target: 'user_123' });
    * await liquid.admin.oauth.createClient({ id: 'my-app', ... });
    */
   readonly admin: AdminNamespace;
@@ -95,7 +102,7 @@ export class LiquidClient {
 
     const http = new HttpClient({ baseUrl: normalizedBaseUrl, getAccessToken });
 
-    this.delegated = new UserNamespace(http);
+    this.users = new UserNamespace(http);
     this.client = new ClientNamespace(http);
     this.admin = new AdminNamespace(http);
     this.oauth = new OAuthNamespace(http);
