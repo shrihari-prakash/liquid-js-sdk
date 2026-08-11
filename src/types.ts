@@ -552,6 +552,21 @@ export interface SystemSettings {
 
 export interface SystemStats {
   requestCount?: number;
+  requestsHandled?: number;
+  processId?: number;
+  platform?: string;
+  arch?: string;
+  nodeVersion?: string;
+  cpuMake?: string;
+  cpuCount?: number;
+  loadAvg?: number[];
+  upTime?: number;
+  heapTotal?: number;
+  heapUsed?: number;
+  heapLimit?: number;
+  rss?: number;
+  systemTotalMemory?: number;
+  systemFreeMemory?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }

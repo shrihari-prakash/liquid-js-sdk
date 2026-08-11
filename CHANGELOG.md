@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.11-beta
+
+- Extended `SystemStats` interface with detailed memory, hardware, and system load properties:
+  - Memory: `heapLimit`, `rss`, `systemTotalMemory`, `systemFreeMemory`.
+  - CPU & Host: `cpuCount`, `arch`, `loadAvg`.
+
 ## 0.0.10-beta
 
 - Removed `liquid.delegated` in favor of `liquid.users` (with `liquid.user` available as alias).
