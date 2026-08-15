@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.13-beta
+
+- Added PKCE support for OAuth authorization code grant flow:
+  - Supported `code_verifier` / `codeVerifier` in `TokenParams` and `OAuthNamespace.token()`.
+  - Supported `code_challenge` / `code_challenge_method` in `AuthorizeParams` and `OAuthNamespace.buildAuthorizeUrl()`.
+
+## 0.0.12-beta
+
+- Published PKCE support parameters to npm registry.
+
 ## 0.0.11-beta
 
 - Extended `SystemStats` interface with detailed memory, hardware, and system load properties:
