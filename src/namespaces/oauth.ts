@@ -22,6 +22,8 @@ export class OAuthNamespace {
     if (params.clientId) searchParams.set("client_id", params.clientId);
     if (params.clientSecret) searchParams.set("client_secret", params.clientSecret);
     if (params.code) searchParams.set("code", params.code);
+    const codeVerifier = params.codeVerifier || params.code_verifier;
+    if (codeVerifier) searchParams.set("code_verifier", codeVerifier);
     if (params.redirectUri) searchParams.set("redirect_uri", params.redirectUri);
     if (params.refreshToken) searchParams.set("refresh_token", params.refreshToken);
     if (params.username) searchParams.set("username", params.username);
@@ -60,6 +62,11 @@ export class OAuthNamespace {
     url.searchParams.set("redirect_uri", params.redirectUri);
     if (params.scope) url.searchParams.set("scope", params.scope);
     if (params.state) url.searchParams.set("state", params.state);
+    const codeChallenge = params.codeChallenge || params.code_challenge;
+    if (codeChallenge) url.searchParams.set("code_challenge", codeChallenge);
+    const codeChallengeMethod =
+      params.codeChallengeMethod || params.code_challenge_method || (codeChallenge ? "S256" : undefined);
+    if (codeChallengeMethod) url.searchParams.set("code_challenge_method", codeChallengeMethod);
     return url.toString();
   }
 }

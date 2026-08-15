@@ -466,6 +466,8 @@ export interface TokenParams {
   clientId?: string;
   clientSecret?: string;
   code?: string;
+  codeVerifier?: string;
+  code_verifier?: string;
   redirectUri?: string;
   refreshToken?: string;
   username?: string;
@@ -502,6 +504,10 @@ export interface AuthorizeParams {
   redirectUri: string;
   scope?: string;
   state?: string;
+  codeChallenge?: string;
+  code_challenge?: string;
+  codeChallengeMethod?: string;
+  code_challenge_method?: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
