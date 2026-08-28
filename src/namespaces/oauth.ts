@@ -17,6 +17,14 @@ export class OAuthNamespace {
    * Note: The server requires `application/x-www-form-urlencoded`.
    */
   token(params: TokenParams): Promise<LiquidResponse<TokenResponse>> {
+    if (params.grantType === "refresh_token" && (!params.refreshToken || params.refreshToken === "undefined")) {
+      return Promise.resolve({
+        status: 400,
+        ok: false,
+        data: undefined as any,
+      });
+    }
+
     const searchParams = new URLSearchParams();
     searchParams.set("grant_type", params.grantType);
     if (params.clientId) searchParams.set("client_id", params.clientId);
@@ -27,7 +35,7 @@ export class OAuthNamespace {
     if (codeVerifier) searchParams.set("code_verifier", codeVerifier);
     if (params.redirectUri)
       searchParams.set("redirect_uri", params.redirectUri);
-    if (params.refreshToken)
+    if (params.refreshToken && params.refreshToken !== "undefined")
       searchParams.set("refresh_token", params.refreshToken);
     if (params.username) searchParams.set("username", params.username);
     if (params.password) searchParams.set("password", params.password);
