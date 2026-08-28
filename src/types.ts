@@ -3,6 +3,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type GetAccessTokenFn = () => string | Promise<string>;
+export type OnUnauthorizedFn = () => string | Promise<string | null | undefined | void> | null | undefined | void;
 
 export interface LiquidClientOptions {
   /** Base URL of the Liquid deployment, e.g. https://auth.example.com */
@@ -12,6 +13,11 @@ export interface LiquidClientOptions {
    * Called before every API request so you can always supply a fresh token.
    */
   getAccessToken: GetAccessTokenFn;
+  /**
+   * Optional callback triggered when an authenticated request receives a 401 Unauthorized.
+   * If a fresh access token is returned, the failed request is automatically retried once.
+   */
+  onUnauthorized?: OnUnauthorizedFn;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

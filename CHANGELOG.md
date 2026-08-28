@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.14-beta
+
+- Added `onUnauthorized` callback support to `HttpClientOptions` and `LiquidClientOptions`.
+- Implemented automatic 401 interception and single request retry on authenticated requests using refreshed tokens.
+
 ## 0.0.13-beta
 
 - Added PKCE support for OAuth authorization code grant flow:

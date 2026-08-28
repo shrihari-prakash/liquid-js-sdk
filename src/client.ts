@@ -95,12 +95,12 @@ export class LiquidClient {
   readonly sso: SSONamespace;
 
   constructor(options: LiquidClientOptions) {
-    const { baseUrl, getAccessToken } = options;
+    const { baseUrl, getAccessToken, onUnauthorized } = options;
 
     // Normalize baseUrl — strip trailing slash
     const normalizedBaseUrl = baseUrl.replace(/\/$/, "");
 
-    const http = new HttpClient({ baseUrl: normalizedBaseUrl, getAccessToken });
+    const http = new HttpClient({ baseUrl: normalizedBaseUrl, getAccessToken, onUnauthorized });
 
     this.users = new UserNamespace(http);
     this.client = new ClientNamespace(http);

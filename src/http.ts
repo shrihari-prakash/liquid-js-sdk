@@ -1,4 +1,4 @@
-import type { GetAccessTokenFn, LiquidResponse } from "./types.js";
+import type { GetAccessTokenFn, OnUnauthorizedFn, LiquidResponse } from "./types.js";
 
 export type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 
@@ -19,6 +19,7 @@ export interface RequestOptions {
 export interface HttpClientOptions {
   baseUrl: string;
   getAccessToken: GetAccessTokenFn;
+  onUnauthorized?: OnUnauthorizedFn;
 }
 
 function buildUrl(
@@ -65,16 +66,28 @@ export class HttpClient {
 
     const url = buildUrl(this.options.baseUrl, path, query);
 
-    const response = await fetch(url, {
-      method,
-      headers,
-      body:
-        body instanceof FormData || body instanceof URLSearchParams || typeof body === "string"
-          ? body
-          : body !== undefined
-          ? JSON.stringify(body)
-          : undefined,
-    });
+    const executeFetch = (authHeader?: string) => {
+      const reqHeaders = authHeader !== undefined ? { ...headers, Authorization: `Bearer ${authHeader}` } : headers;
+      return fetch(url, {
+        method,
+        headers: reqHeaders,
+        body:
+          body instanceof FormData || body instanceof URLSearchParams || typeof body === "string"
+            ? body
+            : body !== undefined
+            ? JSON.stringify(body)
+            : undefined,
+      });
+    };
+
+    let response = await executeFetch();
+
+    if (response.status === 401 && !unauthenticated && this.options.onUnauthorized) {
+      const refreshedToken = await this.options.onUnauthorized();
+      if (refreshedToken) {
+        response = await executeFetch(refreshedToken);
+      }
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let rawJson: any;
