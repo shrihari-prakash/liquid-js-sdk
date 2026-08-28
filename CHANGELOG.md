@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.15-beta
+
+- Added single-flight mutex in `HttpClient` (`handleUnauthorized`) to coordinate concurrent 401 requests and prevent race conditions on token refresh.
+- Added client-side parameter validation in `liquidClient.oauth.token` for `grant_type: refresh_token`.
+
 ## 0.0.14-beta
 
 - Added `onUnauthorized` callback support to `HttpClientOptions` and `LiquidClientOptions`.

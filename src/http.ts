@@ -42,7 +42,28 @@ function buildUrl(
 }
 
 export class HttpClient {
+  /** Mutex: if a refresh via onUnauthorized is in flight, all concurrent 401 callers await this */
+  private refreshPromise: Promise<string | null> | null = null;
+
   constructor(private readonly options: HttpClientOptions) {}
+
+  private async handleUnauthorized(): Promise<string | null> {
+    if (!this.options.onUnauthorized) {
+      return null;
+    }
+    if (this.refreshPromise) {
+      return this.refreshPromise;
+    }
+    this.refreshPromise = (async () => {
+      try {
+        const token = await this.options.onUnauthorized!();
+        return token ?? null;
+      } finally {
+        this.refreshPromise = null;
+      }
+    })();
+    return this.refreshPromise;
+  }
 
   async request<T = unknown>(opts: RequestOptions): Promise<LiquidResponse<T>> {
     const { method = "GET", path, body, query, unauthenticated = false, contentType } = opts;
@@ -83,7 +104,7 @@ export class HttpClient {
     let response = await executeFetch();
 
     if (response.status === 401 && !unauthenticated && this.options.onUnauthorized) {
-      const refreshedToken = await this.options.onUnauthorized();
+      const refreshedToken = await this.handleUnauthorized();
       if (refreshedToken) {
         response = await executeFetch(refreshedToken);
       }
