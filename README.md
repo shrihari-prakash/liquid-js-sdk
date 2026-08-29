@@ -23,6 +23,31 @@ const { data } = await liquid.users.getMe();
 console.log(data.user);
 ```
 
+## Automatic Token Refresh (`onUnauthorized`)
+
+The SDK supports seamless automatic token refresh when authenticated requests receive a `401 Unauthorized`.
+
+Pass the `onUnauthorized` callback in client options:
+
+```ts
+import { createLiquidClient } from "liquid-js-sdk";
+import oauthManager from "./oauth-manager";
+
+const liquid = createLiquidClient({
+  baseUrl: "https://auth.example.com",
+  getAccessToken: async () => oauthManager.getAccessToken(),
+  onUnauthorized: async () => {
+    // Perform token refresh (e.g. via refresh_token) and return the fresh access token
+    const freshToken = await oauthManager.refreshAccessToken();
+    return freshToken; // returning string retries the request; null/undefined aborts retry
+  },
+});
+```
+
+### Features:
+- **Single-Flight Mutex (Promise Sharing)**: When multiple API calls hit `401` concurrently, `onUnauthorized` is executed **only once**. All concurrent in-flight requests await the same refresh promise and retry in parallel with the new access token.
+- **Transparent Retry**: If `onUnauthorized` returns a new token string, the failed request is retried once with the new Bearer header and resolves cleanly.
+
 ## API Namespaces Summary
 
 | Namespace                | Auth Context       | Example Usage                                                 |

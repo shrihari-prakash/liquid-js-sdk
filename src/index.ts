@@ -114,6 +114,9 @@ import type { LiquidClientOptions } from "./types.js";
  * @param options.baseUrl - The base URL of your Liquid deployment (e.g. `https://auth.example.com`).
  * @param options.getAccessToken - A function (sync or async) that returns a valid Bearer access token.
  *   Called before every authenticated request so tokens are always fresh.
+ * @param options.onUnauthorized - Optional callback (sync or async) invoked when an authenticated request
+ *   receives a 401 Unauthorized. The SDK coordinates concurrent 401s via a single-flight mutex, executes
+ *   this callback once, and automatically retries all in-flight requests with the returned fresh access token.
  */
 export function createLiquidClient(options: LiquidClientOptions): LiquidClient {
   return new LiquidClient(options);
